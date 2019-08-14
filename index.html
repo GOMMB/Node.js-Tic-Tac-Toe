@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+        <title>Tic-Tac-Toe</title>
+    </head>
+    <body>
+        <table>
+            <tr>
+                <td id='0'></td>
+                <td id='1'></td>
+                <td id='2'></td>
+            </tr>
+            <tr>
+                <td id='3'></td>
+                <td id='4'></td>
+                <td id='5'></td>
+            </tr>
+            <tr>
+                <td id='6'></td>
+                <td id='7'></td>
+                <td id='8'></td>
+            </tr>
+        </table>
+        <button id="reset">Reset</button>
+    </body>
+    <style>
+        body {
+            text-align: center;
+        }
+        button {
+            width: 200px;
+            height: 100px;
+            font-size: 50px;
+            margin-top: 20px;
+        }
+        table {
+            width: 800px;
+            height: 800px;
+            margin: auto;
+        }
+        table td {
+            border: 2px solid black;
+            width: 33.3333333333%;
+            height: 33.3333333333%;
+            font-size: 150px;
+            text-align: center;
+            margin: auto;
+        }
+        table tr:first-child td {
+            border-top: 0;
+        }
+        table tr:last-child td {
+            border-bottom: 0;
+        }
+        table tr td:first-child {
+            border-left: 0;
+        }
+        table tr td:last-child {
+            border-right: 0;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.js"></script>
+    <script>
+
+        let socket = io();
+
+        $('td').click(function() {
+            socket.emit('click', this.id);
+        });
+
+        $('button#reset').click(function() {
+            socket.emit('reset', null);
+        });
+
+        socket.on('click', function(stuff) {
+            $('td#' + stuff[0]).text(stuff[1]);
+        });
+
+        socket.on('reset', function(stuff) {
+            $('td').text('');
+        });
+        
+        socket.on('max_players', function(stuff) {
+            alert(stuff)
+        })
+        
+        socket.on('winner', function(stuff) {
+            alert(stuff)
+        })
+        
+    </script>
+</html>
